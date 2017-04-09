@@ -2,7 +2,7 @@
 'author:Tony': null
 ---
 
-# ECMAScript 6简介 {#ecmascript-6-}
+ECMAScript 6简介
 
 ECMAScript 6.0（以下简称ES6）是JavaScript语言的下一代标准，已经在2015年6月正式发布了。它的目标，是使得JavaScript语言可以用来编写复杂的大型应用程序，成为企业级开发语言。
 
@@ -305,8 +305,6 @@ $ npm install --save-dev babel-cli
 
 上面代码中，使用`babel-node`替代`node`，这样`script.js`本身就不用做任何转码处理。
 
-
-
 ### babel-register {#babel-register}
 
 `babel-register`模块改写`require`命令，为它加上一个钩子。此后，每当使用`require`加载`.js`、`.jsx`、`.es`和`.es6`后缀名的文件，就会先用Babel进行转码。
@@ -386,6 +384,83 @@ Babel默认只转换新的JavaScript句法（syntax），而不转换新的API�
 举例来说，ES6在`Array`对象上新增了`Array.from`方法。Babel就不会转码这个方法。如果想让这个方法运行，必须使用`babel-polyfill`，为当前环境提供一个垫片。
 
 安装命令如下。
+
+```
+$ npm install --save babel-polyfill
+```
+
+然后，在脚本头部，加入如下一行代码。
+
+```
+import 'babel-polyfill';
+// 或者
+require('babel-polyfill');
+```
+
+Babel默认不转码的API非常多，详细清单可以查看
+
+`babel-plugin-transform-runtime`
+
+模块的[definitions.js](https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/definitions.js)文件。
+
+### 浏览器环境 {#浏览器环境}
+
+Babel也可以用于浏览器环境。但是，从Babel 6.0开始，不再直接提供浏览器版本，而是要用构建工具构建出来。如果你没有或不想使用构建工具，可以通过安装5.x版本的`babel-core`模块获取。
+
+```
+$ npm install babel-core@5
+```
+
+运行上面的命令以后，就可以在当前目录的`node_modules/babel-core/`子目录里面，找到`babel`的浏览器版本`browser.js`（未精简）和`browser.min.js`（已精简）。
+
+然后，将下面的代码插入网页。
+
+```
+<script src="node_modules/babel-core/browser.js"></script>
+<script type="text/babel">
+// Your ES6 code
+</script>
+```
+
+上面代码中，`browser.js`是Babel提供的转换器脚本，可以在浏览器运行。用户的ES6脚本放在
+
+`script`标签之中，但是要注明`type="text/babel"`。
+
+另一种方法是使用[babel-standalone](https://github.com/Daniel15/babel-standalone)模块提供的浏览器版本，将其插入网页。
+
+```
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.4.4/babel.min.js"></script>
+<script type="text/babel">
+// Your ES6 code
+</script>
+```
+
+注意，网页中实时将ES6代码转为ES5，对性能会有影响。生产环境需要加载已经转码完成的脚本。
+
+下面是如何将代码打包成浏览器可以使用的脚本，以`Babel`配合`Browserify`为例。首先，安装`babelify`模块。
+
+```
+$ npm install --save-dev babelify babel-preset-es2015
+```
+
+然后，再用命令行转换ES6脚本。
+
+```
+$  browserify script.js -o bundle.js \
+  -t [ babelify --presets [ es2015 ] ]
+```
+
+上面代码将ES6脚本`script.js`，转为`bundle.js`，浏览器直接加载后者就可以了。
+
+在`package.json`设置下面的代码，就不用每次命令行都输入参数了。
+
+```
+{
+  "browserify": {
+    "transform": [["babelify", { "presets": ["es2015"] }]]
+  }
+}
+```
 
 
 
