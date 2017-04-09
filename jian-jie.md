@@ -82,6 +82,18 @@ Node.js是JavaScript语言的服务器运行环境，对ES6的支持度比浏览
 $ curl -o- https://raw.githubusercontent.com/creationix/nvm/<version number>/install.sh | bash
 ```
 
+上面命令的`version number`处，需要用版本号替换。本节写作时的版本号是`v0.29.0`。该命令运行后，`nvm`会默认安装在用户主目录的`.nvm`子目录。
+
+然后，激活`nvm`。
+
+```
+$ source ~/.nvm/nvm.sh
+```
+
+
+
+
+
 
 
 
