@@ -190,5 +190,118 @@ $ npm install --save-dev babel-preset-stage-3
 
 `.babelrc`
 
+```
+{
+    "presets": [
+      "es2015",
+      "react",
+      "stage-2"
+    ],
+    "plugins": []
+  }
+```
 
+注意，以下所有Babel工具和模块的使用，都必须先写好`babelrc`
+
+### 命令行转码babel-cli {#命令行转码babel-cli}
+
+Babel提供`babel-cli`工具，用于命令行转码。
+
+它的安装命令如下。
+
+```
+$ npm install --global babel-cli
+```
+
+基本用法如下。
+
+```
+# 转码结果输出到标准输出
+$ babel example.js
+
+# 转码结果写入一个文件
+# --out-file 或 -o 参数指定输出文件
+$ babel example.js --out-file compiled.js
+# 或者
+$ babel example.js -o compiled.js
+
+# 整个目录转码
+# --out-dir 或 -d 参数指定输出目录
+$ babel src --out-dir lib
+# 或者
+$ babel src -d lib
+
+# -s 参数生成source map文件
+$ babel src -d lib -s
+```
+
+上面代码是在全局环境下，进行Babel转码。这意味着，如果项目要运行，全局环境必须有Babel，也就是说项目产生了对环境的依赖。另一方面，这样做也无法支持不同项目使用不同版本的Babel。
+
+一个解决办法是将`babel-cli`安装在项目之中。
+
+```
+# 安装
+$ npm install --save-dev babel-cli
+```
+
+然后，改写
+
+`package.json`
+
+```
+{
+  // ...
+  "devDependencies": {
+    "babel-cli": "^6.0.0"
+  },
+  "scripts": {
+    "build": "babel src -d lib"
+  },
+}
+```
+
+转码的时候，就执行下面的命令。
+
+```
+$ npm run build
+```
+
+### babel-node {#babel-node}
+
+`babel-cli`工具自带一个`babel-node`命令，提供一个支持ES6的REPL环境。它支持Node的REPL环境的所有功能，而且可以直接运行ES6代码。
+
+它不用单独安装，而是随`babel-cli`一起安装。然后，执行`babel-node`就进入REPL环境。
+
+```
+$ babel-node
+> (x => x * 2)(1)
+2
+```
+
+`babel-node`
+
+命令可以直接运行ES6脚本。将上面的代码放入脚本文件`es6.js`然后直接运行。
+
+```
+$ babel-node es6.js
+2
+```
+
+`babel-node`也可以安装在项目中。
+
+```
+$ npm install --save-dev babel-cli
+```
+
+然后，改写`package.json`
+
+```
+{
+  "scripts": {
+    "script-name": "babel-node script.js"
+  }
+}
+```
+
+上面代码中，使用`babel-node`替代`node`，这样`script.js`本身就不用做任何转码处理。
 
