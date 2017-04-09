@@ -123,13 +123,9 @@ $ node --v8-options | grep harmony
   --harmony
 ```
 
-
-
 上面命令的输出结果，会因为版本的不同而有所不同。
 
 我写了一个[ES-Checker](https://github.com/ruanyf/es-checker)模块，用来检查各种运行环境对ES6的支持情况。访问[ruanyf.github.io/es-checker](http://ruanyf.github.io/es-checker)，可以看到您的浏览器支持ES6的程度。运行下面的命令，可以查看你正在使用的Node环境对ES6的支持程度。
-
-
 
 ```
 $ npm install -g es-checker
@@ -159,8 +155,6 @@ input.map(function (item) {
 
 上面的原始代码用了箭头函数，这个特性还没有得到广泛支持，Babel将其转为普通函数，就能在现有的JavaScript环境执行了。
 
-
-
 ### 配置文件.babelrc {#配置文件-babelrc}
 
 Babel的配置文件是`.babelrc`，存放在项目的根目录下。使用Babel的第一步，就是配置这个文件。
@@ -174,13 +168,27 @@ Babel的配置文件是`.babelrc`，存放在项目的根目录下。使用Babel
 }
 ```
 
+`presets`
 
+字段设定转码规则，官方提供以下的规则集，你可以根据需要安装。
 
+```
+# ES2015转码规则
+$ npm install --save-dev babel-preset-es2015
 
+# react转码规则
+$ npm install --save-dev babel-preset-react
 
+# ES7不同阶段语法提案的转码规则（共有4个阶段），选装一个
+$ npm install --save-dev babel-preset-stage-0
+$ npm install --save-dev babel-preset-stage-1
+$ npm install --save-dev babel-preset-stage-2
+$ npm install --save-dev babel-preset-stage-3
+```
 
+然后，将这些规则加入
 
+`.babelrc`
 
-
-
+。
 
