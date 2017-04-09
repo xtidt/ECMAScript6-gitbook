@@ -90,6 +90,92 @@ $ curl -o- https://raw.githubusercontent.com/creationix/nvm/<version number>/ins
 $ source ~/.nvm/nvm.sh
 ```
 
+激活以后，安装Node的最新版。
+
+```
+$ nvm install node
+```
+
+安装完成后，切换到该版本。
+
+```
+$ nvm use node
+```
+
+使用下面的命令，可以查看Node所有已经实现的ES6特性。
+
+```
+$ node --v8-options | grep harmony
+
+  --harmony_typeof
+  --harmony_scoping
+  --harmony_modules
+  --harmony_symbols
+  --harmony_proxies
+  --harmony_collections
+  --harmony_observation
+  --harmony_generators
+  --harmony_iteration
+  --harmony_numeric_literals
+  --harmony_strings
+  --harmony_arrays
+  --harmony_maths
+  --harmony
+```
+
+
+
+上面命令的输出结果，会因为版本的不同而有所不同。
+
+我写了一个[ES-Checker](https://github.com/ruanyf/es-checker)模块，用来检查各种运行环境对ES6的支持情况。访问[ruanyf.github.io/es-checker](http://ruanyf.github.io/es-checker)，可以看到您的浏览器支持ES6的程度。运行下面的命令，可以查看你正在使用的Node环境对ES6的支持程度。
+
+
+
+```
+$ npm install -g es-checker
+$ es-checker
+
+=========================================
+Passes 24 feature Dectations
+Your runtime supports 57% of ECMAScript 6
+=========================================
+```
+
+## Babel转码器 {#Babel转码器}
+
+[Babel](https://babeljs.io/)
+
+是一个广泛使用的ES6转码器，可以将ES6代码转为ES5代码，从而在现有环境执行。这意味着，你可以用ES6的方式编写程序，又不用担心现有环境是否支持。下面是一个例子。
+
+```
+// 转码前
+input.map(item => item + 1);
+
+// 转码后
+input.map(function (item) {
+  return item + 1;
+});
+```
+
+上面的原始代码用了箭头函数，这个特性还没有得到广泛支持，Babel将其转为普通函数，就能在现有的JavaScript环境执行了。
+
+
+
+### 配置文件.babelrc {#配置文件-babelrc}
+
+Babel的配置文件是`.babelrc`，存放在项目的根目录下。使用Babel的第一步，就是配置这个文件。
+
+该文件用来设置转码规则和插件，基本格式如下。
+
+```
+{
+  "presets": [],
+  "plugins": []
+}
+```
+
+
+
 
 
 
