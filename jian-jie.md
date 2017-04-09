@@ -305,3 +305,87 @@ $ npm install --save-dev babel-cli
 
 上面代码中，使用`babel-node`替代`node`，这样`script.js`本身就不用做任何转码处理。
 
+
+
+### babel-register {#babel-register}
+
+`babel-register`模块改写`require`命令，为它加上一个钩子。此后，每当使用`require`加载`.js`、`.jsx`、`.es`和`.es6`后缀名的文件，就会先用Babel进行转码。
+
+```
+$ npm install --save-dev babel-register
+```
+
+使用时，必须首先加载`babel-register`
+
+```
+require("babel-register");
+require("./index.js");
+```
+
+然后，就不需要手动对`index.js`转码了。
+
+需要注意的是，`babel-register`只会对`require`命令加载的文件转码，而不会对当前文件转码。另外，由于它是实时转码，所以只适合在开发环境使用。
+
+### babel-core {#babel-core}
+
+如果某些代码需要调用Babel的API进行转码，就要使用`babel-core`模块。
+
+安装命令如下。
+
+```
+$ npm install babel-core --save
+```
+
+然后，在项目中就可以调用`babel-core`
+
+```
+var babel = require('babel-core');
+
+// 字符串转码
+babel.transform('code();', options);
+// => { code, map, ast }
+
+// 文件转码（异步）
+babel.transformFile('filename.js', options, function(err, result) {
+  result; // => { code, map, ast }
+});
+
+// 文件转码（同步）
+babel.transformFileSync('filename.js', options);
+// => { code, map, ast }
+
+// Babel AST转码
+babel.transformFromAst(ast, code, options);
+// => { code, map, ast }
+```
+
+配置对象`options`，可以参看官方文档[http://babeljs.io/docs/usage/options/](http://babeljs.io/docs/usage/options/)。
+
+下面是一个例子。
+
+```
+var es6Code = 'let x = n => n + 1';
+var es5Code = require('babel-core')
+  .transform(es6Code, {
+    presets: ['es2015']
+  })
+  .code;
+// '"use strict";\n\nvar x = function x(n) {\n  return n + 1;\n};'
+```
+
+上面代码中，
+
+`transform`
+
+方法的第一个参数是一个字符串，表示需要被转换的ES6代码，第二个参数是转换的配置对象。
+
+### babel-polyfill {#babel-polyfill}
+
+Babel默认只转换新的JavaScript句法（syntax），而不转换新的API，比如Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise等全局对象，以及一些定义在全局对象上的方法（比如`Object.assign`）都不会转码。
+
+举例来说，ES6在`Array`对象上新增了`Array.from`方法。Babel就不会转码这个方法。如果想让这个方法运行，必须使用`babel-polyfill`，为当前环境提供一个垫片。
+
+安装命令如下。
+
+
+
