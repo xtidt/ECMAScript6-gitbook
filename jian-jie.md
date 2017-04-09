@@ -190,5 +190,3 @@ $ npm install --save-dev babel-preset-stage-3
 
 `.babelrc`
 
-。
-
