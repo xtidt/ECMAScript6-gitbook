@@ -464,31 +464,19 @@ $  browserify script.js -o bundle.js \
 
 在线转换
 
-
-
 Babel 提供一个 REPL在线编译器，可以在线将 ES6 代码转为 ES5 代码。转换后的代码，可以直接作为 ES5 代码插入网页运行。
 
 与其他工具的配合
 
-
-
 许多工具需要 Babel 进行前置转码，这里举两个例子：ESLint 和 Mocha。
 
-
-
 ESLint 用于静态检查代码的语法和风格，安装命令如下。
-
-
 
 ```
 $ npm install --save-dev eslint babel-eslint
 ```
 
-
-
 然后，在项目根目录下，新建一个配置文件.eslintrc，在其中加入parser字段。
-
-
 
 ```
 {
@@ -499,227 +487,171 @@ $ npm install --save-dev eslint babel-eslint
 }
 ```
 
-
-
 再在package.json之中，加入相应的scripts脚本。
 
-
-
- {
-
-    "name": "my-module",
-
-    "scripts": {
-
-      "lint": "eslint my-files.js"
-
-    },
-
-    "devDependencies": {
-
-      "babel-eslint": "...",
-
-      "eslint": "..."
-
-    }
-
-  }
-
-
-
-Mocha 则是一个测试框架，如果需要执行使用 ES6 语法的测试脚本，可以修改package.json的scripts.test。
-
-
+```
+{
+"name": "my-module",
 
 "scripts": {
 
-  "test": "mocha --ui qunit --compilers js:babel-core/register"
+  "lint": "eslint my-files.js"
+
+},
+
+"devDependencies": {
+
+  "babel-eslint": "...",
+
+  "eslint": "..."
 
 }
+}
+```
 
+Mocha 则是一个测试框架，如果需要执行使用 ES6 语法的测试脚本，可以修改package.json的scripts.test。
 
+```
+"scripts": {
+  "test": "mocha --ui qunit --compilers js:babel-core/register"
+}
+```
 
 上面命令中，--compilers参数指定脚本的转码器，规定后缀名为js的文件，都需要使用babel-core/register
-
-
 
 先转码。
 
 Traceur 转码器
 
-
-
 Google公司的Traceur转码器，也可以将 ES6 代码转为 ES5 代码。
 
-
-
-    直接插入网页
-
-
+```
+直接插入网页
+```
 
 Traceur 允许将 ES6 代码直接插入网页。首先，必须在网页头部加载 Traceur 库文件。
 
+&lt;script src="[https://google.github.io/traceur-compiler/bin/traceur.js"&gt;&lt;/script&gt](https://google.github.io/traceur-compiler/bin/traceur.js"></script&gt);
 
+&lt;script src="[https://google.github.io/traceur-compiler/bin/BrowserSystem.js"&gt;&lt;/script&gt](https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script&gt);
 
-&lt;script src="https://google.github.io/traceur-compiler/bin/traceur.js"&gt;&lt;/script&gt;
-
-&lt;script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"&gt;&lt;/script&gt;
-
-&lt;script src="https://google.github.io/traceur-compiler/src/bootstrap.js"&gt;&lt;/script&gt;
+&lt;script src="[https://google.github.io/traceur-compiler/src/bootstrap.js"&gt;&lt;/script&gt](https://google.github.io/traceur-compiler/src/bootstrap.js"></script&gt);
 
 &lt;script type="module"&gt;
 
-  import './Greeter.js';
+import './Greeter.js';
 
 &lt;/script&gt;
-
-
 
 上面代码中，一共有4个script标签。第一个是加载 Traceur 的库文件，第二个和第三个是将这个库文件用于浏览器环境，第四个则是加载用户脚本，这个脚本里面可以使用ES6代码。
 
-
-
 注意，第四个script标签的type属性的值是module，而不是text/javascript。这是 Traceur 编译器识别 ES6 代码的标志，编译器会自动将所有type=module的代码编译为 ES5，然后再交给浏览器执行。
-
-
 
 除了引用外部 ES6 脚本，也可以直接在网页中放置 ES6 代码。
 
-
-
 &lt;script type="module"&gt;
 
-  class Calc {
+class Calc {
 
-    constructor\(\) {
+```
+constructor\(\) {
 
-      console.log\('Calc constructor'\);
+  console.log\('Calc constructor'\);
 
-    }
+}
 
-    add\(a, b\) {
+add\(a, b\) {
 
-      return a + b;
+  return a + b;
 
-    }
+}
+```
 
-  }
+}
 
+var c = new Calc\(\);
 
-
-  var c = new Calc\(\);
-
-  console.log\(c.add\(4,5\)\);
+console.log\(c.add\(4,5\)\);
 
 &lt;/script&gt;
-
-
 
 正常情况下，上面代码会在控制台打印出9。
 
-
-
 如果想对 Traceur 的行为有精确控制，可以采用下面参数配置的写法。
-
-
 
 &lt;script&gt;
 
-  // Create the System object
+// Create the System object
 
-  window.System = new traceur.runtime.BrowserTraceurLoader\(\);
+window.System = new traceur.runtime.BrowserTraceurLoader\(\);
 
-  // Set some experimental options
+// Set some experimental options
 
-  var metadata = {
+var metadata = {
 
-    traceurOptions: {
+```
+traceurOptions: {
 
-      experimental: true,
+  experimental: true,
 
-      properTailCalls: true,
+  properTailCalls: true,
 
-      symbols: true,
+  symbols: true,
 
-      arrayComprehension: true,
+  arrayComprehension: true,
 
-      asyncFunctions: true,
+  asyncFunctions: true,
 
-      asyncGenerators: exponentiation,
+  asyncGenerators: exponentiation,
 
-      forOn: true,
+  forOn: true,
 
-      generatorComprehension: true
+  generatorComprehension: true
 
-    }
+}
+```
 
-  };
+};
 
-  // Load your module
+// Load your module
 
-  System.import\('./myModule.js', {metadata: metadata}\).catch\(function\(ex\) {
+System.import\('./myModule.js', {metadata: metadata}\).catch\(function\(ex\) {
 
-    console.error\('Import failed', ex.stack \|\| ex\);
+```
+console.error\('Import failed', ex.stack \|\| ex\);
+```
 
-  }\);
+}\);
 
 &lt;/script&gt;
 
-
-
 上面代码中，首先生成Traceur的全局对象
-
-
 
 window.System
 
-
-
 ，然后
-
-
 
 System.import
 
-
-
 方法可以用来加载 ES6。加载的时候，需要传入一个配置对象
-
-
 
 metadata
 
-
-
 ，该对象的
-
-
 
 traceurOptions
 
-
-
 属性可以配置支持 ES6 功能。如果设为
-
-
 
 experimental: true
 
-
-
 ，就表示除了 ES6 以外，还支持一些实验性的新功能。
 
-
-
-    在线转换
-
-
+```
+在线转换
+```
 
 Traceur也提供一个在线编译器，可以在线将 ES6 代码转为 ES5 代码。转换后的代码，可以直接作为 ES5 代码插入网页运行。
 
-
-
 上面的例子转为 ES5 代码运行，就是下面这个样子。
-
-
 
