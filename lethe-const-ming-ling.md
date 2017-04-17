@@ -453,5 +453,55 @@ const foo;
 // SyntaxError: Missing initializer in const declaration
 ```
 
+上面代码表示，对于`const`来说，只声明不赋值，就会报错。
+
+`const`的作用域与`let`命令相同：只在声明所在的块级作用域内有效。
+
+```
+if (true) {
+  const MAX = 5;
+}
+
+MAX // Uncaught ReferenceError: MAX is not defined
+```
+
+`const`命令声明的常量也是不提升，同样存在暂时性死区，只能在声明的位置后面使用。
+
+```
+if (true) {
+  console.log(MAX); // ReferenceError
+  const MAX = 5;
+}
+```
+
+上面代码在常量`MAX`声明之前就调用，结果报错。
+
+`const`声明的常量，也与`let`一样不可重复声明。
+
+```
+var message = "Hello!";
+let age = 25;
+
+// 以下两行都会报错
+const message = "Goodbye!";
+const age = 30;
+```
+
+### 本质 {#本质}
+
+`const`实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指针，`const`只能保证这个指针是固定的，至于它指向的数据结构是不是可变的，就完全不能控制了。因此，将一个对象声明为常量必须非常小心。  
+
+
+```
+const foo = {};
+
+// 为 foo 添加一个属性，可以成功
+foo.prop = 123;
+foo.prop // 123
+
+// 将 foo 指向另一个对象，就会报错
+foo = {}; // TypeError: "foo" is read-only
+```
+
 
 
