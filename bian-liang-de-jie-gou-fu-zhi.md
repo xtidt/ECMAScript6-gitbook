@@ -108,8 +108,6 @@ sixth // 5
 
 上面代码中，`fibs`是一个 Generator 函数（参见《Generator 函数》一章），原生具有 Iterator 接口。解构赋值会依次从这个接口获取值。
 
-
-
 ### 默认值[§](http://es6.ruanyifeng.com/#docs/destructuring#默认值)[⇧](http://es6.ruanyifeng.com/#docs/destructuring) {#默认值}
 
 解构赋值允许指定默认值。
@@ -124,7 +122,27 @@ let [x, y = 'b'] = ['a', undefined]; // x='a', y='b'
 
 注意，ES6 内部使用严格相等运算符（`===`），判断一个位置是否有值。所以，如果一个数组成员不严格等于`undefined`，默认值是不会生效的。
 
+```
+let [x = 1] = [undefined];
+x // 1
+
+let [x = 1] = [null];
+x // null
+```
+
+上面代码中，如果一个数组成员是`null`，默认值就不会生效，因为`null`不严格等于`undefined`。
+
+如果默认值是一个表达式，那么这个表达式是惰性求值的，即只有在用到的时候，才会求值。
+
+```
+function f() {
+  console.log('aaa');
+}
+
+let [x = f()] = [1];
+```
 
 
 
+上面代码中，因为`x`能取到值，所以函数`f`根本不会执行。上面的代码其实等价于下面的代码。
 
