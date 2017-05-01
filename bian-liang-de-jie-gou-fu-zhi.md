@@ -185,5 +185,19 @@ let { baz } = { foo: "aaa", bar: "bbb" };
 baz // undefined
 ```
 
+上面代码的第一个例子，等号左边的两个变量的次序，与等号右边两个同名属性的次序不一致，但是对取值完全没有影响。第二个例子的变量没有对应的同名属性，导致取不到值，最后等于`undefined`。
+
+如果变量名与属性名不一致，必须写成下面这样。
+
+```
+var { foo: baz } = { foo: 'aaa', bar: 'bbb' };
+baz // "aaa"
+
+let obj = { first: 'hello', last: 'world' };
+let { first: f, last: l } = obj;
+f // 'hello'
+l // 'world'
+```
+
 
 
