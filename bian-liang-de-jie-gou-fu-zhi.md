@@ -83,3 +83,48 @@ let [foo] = {};
 
 上面的语句都会报错，因为等号右边的值，要么转为对象以后不具备 Iterator 接口（前五个表达式），要么本身就不具备 Iterator 接口（最后一个表达式）。
 
+对于 Set 结构，也可以使用数组的解构赋值。
+
+```
+let [x, y, z] = new Set(['a', 'b', 'c']);
+x // "a"
+```
+
+事实上，只要某种数据结构具有 Iterator 接口，都可以采用数组形式的解构赋值。
+
+```
+function* fibs() {
+  let a = 0;
+  let b = 1;
+  while (true) {
+    yield a;
+    [a, b] = [b, a + b];
+  }
+}
+
+let [first, second, third, fourth, fifth, sixth] = fibs();
+sixth // 5
+```
+
+上面代码中，`fibs`是一个 Generator 函数（参见《Generator 函数》一章），原生具有 Iterator 接口。解构赋值会依次从这个接口获取值。
+
+
+
+### 默认值[§](http://es6.ruanyifeng.com/#docs/destructuring#默认值)[⇧](http://es6.ruanyifeng.com/#docs/destructuring) {#默认值}
+
+解构赋值允许指定默认值。
+
+```
+let [foo = true] = [];
+foo // true
+
+let [x, y = 'b'] = ['a']; // x='a', y='b'
+let [x, y = 'b'] = ['a', undefined]; // x='a', y='b'
+```
+
+注意，ES6 内部使用严格相等运算符（`===`），判断一个位置是否有值。所以，如果一个数组成员不严格等于`undefined`，默认值是不会生效的。
+
+
+
+
+
