@@ -272,5 +272,19 @@ loc  // error: loc is undefined
 start // error: start is undefined
 ```
 
+上面代码中，只有`line`是变量，`loc`和`start`都是模式，不会被赋值。
+
+下面是嵌套赋值的例子。
+
+```
+let obj = {};
+let arr = [];
+
+({ foo: obj.prop, bar: arr[0] } = { foo: 123, bar: true });
+
+obj // {prop:123}
+arr // [true]
+```
+
 
 
