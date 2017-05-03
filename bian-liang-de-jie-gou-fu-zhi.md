@@ -237,5 +237,40 @@ let baz;
 ({bar: baz} = {bar: 1}); // 成功
 ```
 
+上面代码中，`let`命令下面一行的圆括号是必须的，否则会报错。因为解析器会将起首的大括号，理解成一个代码块，而不是赋值语句。
+
+和数组一样，解构也可以用于嵌套结构的对象。
+
+```
+let obj = {
+  p: [
+    'Hello',
+    { y: 'World' }
+  ]
+};
+
+let { p: [x, { y }] } = obj;
+x // "Hello"
+y // "World"
+```
+
+注意，这时`p`是模式，不是变量，因此不会被赋值。
+
+```
+var node = {
+  loc: {
+    start: {
+      line: 1,
+      column: 5
+    }
+  }
+};
+
+var { loc: { start: { line }} } = node;
+line // 1
+loc  // error: loc is undefined
+start // error: start is undefined
+```
+
 
 
