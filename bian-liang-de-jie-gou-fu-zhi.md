@@ -286,5 +286,37 @@ obj // {prop:123}
 arr // [true]
 ```
 
+对象的解构也可以指定默认值。
 
+```
+var {x = 3} = {};
+x // 3
+
+var {x, y = 5} = {x: 1};
+x // 1
+y // 5
+
+var {x:y = 3} = {};
+y // 3
+
+var {x:y = 3} = {x: 5};
+y // 5
+
+var { message: msg = 'Something went wrong' } = {};
+msg // "Something went wrong"
+```
+
+默认值生效的条件是，对象的属性值严格等于`undefined`。
+
+```
+var {x = 3} = {x: undefined};
+x // 3
+
+var {x = 3} = {x: null};
+x // null
+```
+
+上面代码中，如果`x`属性等于`null`，就不严格相等于`undefined`，导致默认值不会生效。
+
+如果解构失败，变量的值等于`undefined`。
 
