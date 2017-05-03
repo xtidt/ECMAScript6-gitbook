@@ -229,9 +229,13 @@ let {bar: baz} = {bar: 1}; // SyntaxError: Duplicate declaration "baz"
 
 `const`命令时出现。如果没有第二个`let`命令，上面的代码就不会报错。
 
+```
+let foo;
+({foo} = {foo: 1}); // 成功
 
-
-
+let baz;
+({bar: baz} = {bar: 1}); // 成功
+```
 
 
 
