@@ -217,11 +217,17 @@ foo // error: foo is not defined
 
 注意，采用这种写法时，变量的声明和赋值是一体的。对于`let`和`const`来说，变量不能重新声明，所以一旦赋值的变量以前声明过，就会报错。
 
+```
+let foo;
+let {foo} = {foo: 1}; // SyntaxError: Duplicate declaration "foo"
 
+let baz;
+let {bar: baz} = {bar: 1}; // SyntaxError: Duplicate declaration "baz"
+```
 
+上面代码中，解构赋值的变量都会重新声明，所以报错了。不过，因为`var`命令允许重新声明，所以这个错误只会在使用`let`和
 
-
-
+`const`命令时出现。如果没有第二个`let`命令，上面的代码就不会报错。
 
 
 
