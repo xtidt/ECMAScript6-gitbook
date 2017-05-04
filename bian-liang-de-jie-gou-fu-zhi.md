@@ -375,7 +375,16 @@ let x;
 let { log, sin, cos } = Math;
 ```
 
+上面代码将`Math`对象的对数、正弦、余弦三个方法，赋值到对应的变量上，使用起来就会方便很多。
 
+由于数组本质是特殊的对象，因此可以对数组进行对象属性的解构。
+
+```
+let arr = [1, 2, 3];
+let {0 : first, [arr.length - 1] : last} = arr;
+first // 1
+last // 3
+```
 
 
 
