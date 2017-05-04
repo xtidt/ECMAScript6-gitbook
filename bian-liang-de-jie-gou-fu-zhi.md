@@ -341,6 +341,15 @@ let _tmp = {baz: 'baz'};
 _tmp.foo.bar // 报错
 ```
 
+如果要将一个已经声明的变量用于解构赋值，必须非常小心。
+
+```
+// 错误的写法
+let x;
+{x} = {x: 1};
+// SyntaxError: syntax error
+```
+
 
 
 
