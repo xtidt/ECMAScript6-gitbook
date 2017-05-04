@@ -320,3 +320,10 @@ x // null
 
 如果解构失败，变量的值等于`undefined`。
 
+```
+let {foo} = {bar: 'baz'};
+foo // undefined
+```
+
+
+
