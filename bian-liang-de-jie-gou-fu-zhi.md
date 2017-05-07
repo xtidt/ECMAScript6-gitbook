@@ -429,5 +429,9 @@ let { prop: x } = undefined; // TypeError
 let { prop: y } = null; // TypeError
 ```
 
+## 函数参数的解构赋值 {#函数参数的解构赋值}
+
+
+
 
 
