@@ -595,5 +595,9 @@ function example() {
 let { foo, bar } = example();
 ```
 
+**（3）函数参数的定义**
+
+解构赋值可以方便地将一组参数与变量名对应起来。
+
 
 
