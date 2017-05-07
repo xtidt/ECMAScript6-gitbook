@@ -410,11 +410,15 @@ len // 5
 
 ## 数值和布尔值的解构赋值 {#数值和布尔值的解构赋值}
 
+解构赋值时，如果等号右边是数值和布尔值，则会先转为对象。
 
+```
+let {toString: s} = 123;
+s === Number.prototype.toString // true
 
-
-
-
+let {toString: s} = true;
+s === Boolean.prototype.toString // true
+```
 
 
 
