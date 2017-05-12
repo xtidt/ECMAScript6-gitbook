@@ -95,3 +95,36 @@ s.codePointAt(2).toString(16) // "61"
 
 `codePointAt`方法传入2。解决这个问题的一个办法是使用`for...of`循环，因为它会正确识别32位的UTF-16字符。
 
+```
+var s = '𠮷a';
+for (let ch of s) {
+  console.log(ch.codePointAt(0).toString(16));
+}
+// 20bb7
+// 61
+```
+
+`codePointAt`
+
+方法是测试一个字符由两个字节还是由四个字节组成的最简单方法。
+
+```
+function is32Bit(c) {
+  return c.codePointAt(0) > 0xFFFF;
+}
+
+is32Bit("𠮷") // true
+is32Bit("a") // false
+```
+
+## String.fromCodePoint\(\) {#String-fromCodePoint}
+
+ES5提供`String.fromCharCode`方法，用于从码点返回对应字符，但是这个方法不能识别32位的UTF-16字符（Unicode编号大于`0xFFFF`）
+
+```
+String.fromCharCode(0x20BB7)
+// "ஷ"
+```
+
+
+
